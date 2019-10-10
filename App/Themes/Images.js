@@ -10,6 +10,7 @@
 // leave off @2x/@3x
 const images = {
   logo: require('../Images/nyt.png'),
+  glass: require('../Images/glass.png')
 }
 
 export default images

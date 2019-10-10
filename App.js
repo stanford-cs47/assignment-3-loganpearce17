@@ -1,15 +1,6 @@
-/*
-*
-* Assignment 3
-* Starter Files
-*
-* CS47
-* Oct, 2018
-*/
-
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
-import { Images, Colors } from './App/Themes'
+import { StyleSheet, Text, View, SafeAreaView, Dimensions, Image, TextInput, TouchableOpacity, Keyboard } from 'react-native';
+import { Images, Colors, Metrics } from './App/Themes'
 import APIRequest from './App/Config/APIRequest'
 
 import News from './App/Components/News'
@@ -22,6 +13,15 @@ export default class App extends React.Component {
     articles : [],
     searchText: '',
     category: ''
+  }
+
+  onChangeText = text => {
+    this.searchText = text
+    console.log(this.searchText)
+  }
+
+  onPressButton = () => {
+    console.log("You searched for " + this.searchText)
   }
 
   componentDidMount() {
@@ -47,18 +47,27 @@ export default class App extends React.Component {
 
     return (
       <SafeAreaView style={styles.container}>
+        <Image style={styles.logo} source={Images.logo} accessibilityLabel={"New York Times Logo"}/>
 
-        <Text style={{textAlign: 'center'}}>Have fun! :) {"\n"} Start by changing the API Key in "./App/Config/AppConfig.js" {"\n"} Then, take a look at the following components: {"\n"} NavigationButtons {"\n"} Search {"\n"} News {"\n"} 🔥</Text>
+        <View style={styles.searchWrapper}>
+          <TextInput
+            style={styles.searchBar}
+            placeholder={"Search by article category!"}
+            onChangeText={text => this.onChangeText(text)}
+            value={this.searchText}
+            onSubmitEditing={this.onPressButton}
+          />
+          <TouchableOpacity onPress={this.onPressButton}>
+            <Image
+              style={styles.searchBtn}
+              source={Images.glass}
+              accessibilityLabel={"Magnifying glass"}
+            />
+          </TouchableOpacity>
+      </View>
 
-        {/*First, you'll need a logo*/}
 
-        {/*Then your search bar*/}
 
-        {/*And some news*/}
-
-        {/*Though, you can style and organize these however you want! power to you 😎*/}
-
-        {/*If you want to return custom stuff from the NYT API, checkout the APIRequest file!*/}
 
       </SafeAreaView>
     );
@@ -69,7 +78,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    justifyContent: 'center',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
     alignItems: 'center'
+  },
+  logo: {
+    width: Dimensions.get('window').width,
+    resizeMode: 'contain',
+    height: 50
+  },
+  searchWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 10,
+  },
+  // Citaiton: styling for searchBar from: https://facebook.github.io/react-native/docs/textinput#autocorrect
+  searchBar: {
+    height: 40,
+    width: Dimensions.get('window').width - 100
+  },
+  searchBtn: {
+    width: Metrics.icons.medium,
+    height: Metrics.icons.medium
   }
 });
