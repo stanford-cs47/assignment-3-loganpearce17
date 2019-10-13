@@ -1,10 +1,23 @@
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Dimensions, Image, TextInput, TouchableOpacity, Keyboard } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  Dimensions,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  Keyboard,
+  FlatList
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { Images, Colors, Metrics } from './App/Themes'
 import APIRequest from './App/Config/APIRequest'
 
 import News from './App/Components/News'
 import Search from './App/Components/Search'
+import Article from './Article.js'
 
 export default class App extends React.Component {
 
@@ -15,13 +28,13 @@ export default class App extends React.Component {
     category: ''
   }
 
-  onChangeText = text => {
-    this.searchText = text
-    console.log(this.searchText)
+  onChangeText = searchText => {
+    this.setState({searchText})
+    console.log(this.state.searchText)
   }
 
-  onPressButton = () => {
-    console.log("You searched for " + this.searchText)
+  onSearch = () => {
+    console.log("You searched for " + this.state.searchText)
   }
 
   componentDidMount() {
@@ -55,15 +68,23 @@ export default class App extends React.Component {
             placeholder={"Search by article category!"}
             onChangeText={text => this.onChangeText(text)}
             value={this.searchText}
-            onSubmitEditing={this.onPressButton}
+            onSubmitEditing={this.onSearch}
           />
-          <TouchableOpacity onPress={this.onPressButton}>
-            <Image
-              style={styles.searchBtn}
-              source={Images.glass}
-              accessibilityLabel={"Magnifying glass"}
-            />
-          </TouchableOpacity>
+           <Ionicons name="md-search" size={32} onPress={this.onSearch} resizeMode="contain"/>
+      </View>
+
+      <View style={styles.flatList}>
+        <FlatList
+          data={this.state.articles}
+          renderItem={( {item, index} ) =>
+              <Article text={item}/>
+          }
+          keyExtractor={(item, index) => {
+            return index.toString()
+          }}
+        />
+
+
       </View>
 
 
@@ -102,5 +123,9 @@ const styles = StyleSheet.create({
   searchBtn: {
     width: Metrics.icons.medium,
     height: Metrics.icons.medium
+  },
+  flatList: {
+    flex: 1,
+    width: '100%'
   }
 });
