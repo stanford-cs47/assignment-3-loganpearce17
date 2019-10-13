@@ -38,16 +38,15 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-
     //uncomment this to run an API query!
-    //this.loadArticles();
+    this.loadArticles();
   }
 
-  async loadArticles(searchTerm = '', category = '') {
+  async loadArticles(searchText = '', category = '') {
     this.setState({articles:[], loading: true});
     var resultArticles = [];
     if (category === '') {
-      resultArticles = await APIRequest.requestSearchPosts(searchTerm);
+      resultArticles = await APIRequest.requestSearchPosts(searchText);
     } else {
       resultArticles = await APIRequest.requestCategoryPosts(category);
     }
@@ -75,7 +74,7 @@ export default class App extends React.Component {
 
       <View style={styles.flatList}>
         <FlatList
-          data={this.state.articles}
+          data={this.state.articles.title}
           renderItem={( {item, index} ) =>
               <Article text={item}/>
           }
@@ -83,8 +82,6 @@ export default class App extends React.Component {
             return index.toString()
           }}
         />
-
-
       </View>
 
 
