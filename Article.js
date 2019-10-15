@@ -6,26 +6,49 @@ import {
   Button,
   View,
   TextInput,
-  Alert
+  Alert,
+  SafeAreaView,
+  TouchableOpacity,
+  Linking
 } from 'react-native';
 
-// 3.2 Make your todos clickable such that they call the
-// delete function in parent when pressed
+
+
 
 export default function Article(props) {
+  // console.log("some text")
+  // console.log(props)
+  function openURL() {
+    Linking.openURL(props.item.url).catch((err) => console.error('An error occurred', err));
+  }
+
   return (
     <View style={styles.container}>
-      <Text>{props.text}</Text>
+      <TouchableOpacity onPress={openURL}>
+      <Text style={styles.title, styles.general}>{props.item.title}</Text>
+      <Text style={styles.details, styles.general}>{props.item.byline}</Text>
+      <Text style={styles.details, styles.general}>{props.item.snippet}</Text>
+      <Text style={styles.details, styles.general}>{props.item.date}</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: 75,
+    flexDirection: 'column',
     width: '100%',
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
+  general: {
+    textAlign: 'left'
+  },
+  title: {
+    fontSize: 20
+  },
+  details: {
+    fontSize: 12,
+  },
 });

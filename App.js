@@ -30,11 +30,10 @@ export default class App extends React.Component {
 
   onChangeText = searchText => {
     this.setState({searchText})
-    console.log(this.state.searchText)
   }
 
   onSearch = () => {
-    console.log("You searched for " + this.state.searchText)
+    this.loadArticles(this.state.searchText);
   }
 
   componentDidMount() {
@@ -59,6 +58,7 @@ export default class App extends React.Component {
 
     return (
       <SafeAreaView style={styles.container}>
+
         <Image style={styles.logo} source={Images.logo} accessibilityLabel={"New York Times Logo"}/>
 
         <View style={styles.searchWrapper}>
@@ -69,14 +69,18 @@ export default class App extends React.Component {
             value={this.searchText}
             onSubmitEditing={this.onSearch}
           />
-           <Ionicons name="md-search" size={32} onPress={this.onSearch} resizeMode="contain"/>
+          <TouchableOpacity>
+            <Ionicons name="md-search" size={32} onPress={this.onSearch} resizeMode="contain"/>
+          </TouchableOpacity>
       </View>
 
       <View style={styles.flatList}>
         <FlatList
-          data={this.state.articles.title}
+          data={this.state.articles}
           renderItem={( {item, index} ) =>
-              <Article text={item}/>
+              <Article
+                item = {item}
+              />
           }
           keyExtractor={(item, index) => {
             return index.toString()
@@ -84,10 +88,9 @@ export default class App extends React.Component {
         />
       </View>
 
-
-
-
       </SafeAreaView>
+
+
     );
   }
 }
@@ -112,7 +115,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
   },
-  // Citaiton: styling for searchBar from: https://facebook.github.io/react-native/docs/textinput#autocorrect
+  // Citaiton: styling for searchBar adapted from: https://facebook.github.io/react-native/docs/textinput#autocorrect
   searchBar: {
     height: 40,
     width: Dimensions.get('window').width - 100
@@ -122,7 +125,8 @@ const styles = StyleSheet.create({
     height: Metrics.icons.medium
   },
   flatList: {
+    marginTop: 10,
     flex: 1,
-    width: '100%'
+    width: Dimensions.get('window').width - 50
   }
 });
