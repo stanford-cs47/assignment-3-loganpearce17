@@ -49,7 +49,7 @@ export default class App extends React.Component {
     } else {
       resultArticles = await APIRequest.requestCategoryPosts(category);
     }
-    console.log(resultArticles);
+    // console.log(resultArticles);
     this.setState({loading: false, articles: resultArticles})
   }
 
@@ -64,13 +64,13 @@ export default class App extends React.Component {
         <View style={styles.searchWrapper}>
           <TextInput
             style={styles.searchBar}
-            placeholder={"Search by article category!"}
+            placeholder={"Search for News"}
             onChangeText={text => this.onChangeText(text)}
             value={this.searchText}
             onSubmitEditing={this.onSearch}
           />
           <TouchableOpacity>
-            <Ionicons name="md-search" size={32} onPress={this.onSearch} resizeMode="contain"/>
+            <Ionicons name="md-search" size={32} color="#CF5243" onPress={this.onSearch} resizeMode="contain"/>
           </TouchableOpacity>
       </View>
 
@@ -111,22 +111,22 @@ const styles = StyleSheet.create({
   searchWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderColor: 'gray',
-    borderWidth: 1,
     borderRadius: 10,
+    backgroundColor: '#F4F2F1'
   },
   // Citaiton: styling for searchBar adapted from: https://facebook.github.io/react-native/docs/textinput#autocorrect
   searchBar: {
     height: 40,
-    width: Dimensions.get('window').width - 100
+    width: Dimensions.get('window').width - 100,
+    marginLeft: 10
   },
   searchBtn: {
     width: Metrics.icons.medium,
-    height: Metrics.icons.medium
+    height: Metrics.icons.medium,
   },
   flatList: {
     marginTop: 10,
     flex: 1,
-    width: Dimensions.get('window').width - 50
+    width: Dimensions.get('window').width - 50,
   }
 });

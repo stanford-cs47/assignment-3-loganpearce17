@@ -12,11 +12,10 @@ import {
   Linking
 } from 'react-native';
 
-
+import { material } from 'react-native-typography';
 
 
 export default function Article(props) {
-  // console.log("some text")
   // console.log(props)
   function openURL() {
     Linking.openURL(props.item.url).catch((err) => console.error('An error occurred', err));
@@ -25,10 +24,10 @@ export default function Article(props) {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={openURL}>
-      <Text style={styles.title, styles.general}>{props.item.title}</Text>
-      <Text style={styles.details, styles.general}>{props.item.byline}</Text>
-      <Text style={styles.details, styles.general}>{props.item.snippet}</Text>
-      <Text style={styles.details, styles.general}>{props.item.date}</Text>
+      <Text style={material.title}>{props.item.title}</Text>
+      <Text style={material.subheading}>{props.item.snippet}</Text>
+      <Text style={material.body2}>{props.item.byline}</Text>
+      <Text style={material.caption}>{props.item.date}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -38,17 +37,8 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     width: '100%',
-    borderWidth: 1,
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'center',
-  },
-  general: {
-    textAlign: 'left'
-  },
-  title: {
-    fontSize: 20
-  },
-  details: {
-    fontSize: 12,
-  },
+    marginBottom: 15
+  }
 });
