@@ -8,8 +8,11 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   Keyboard,
-  FlatList
+  FlatList,
+  RefreshControl,
+  ActivityIndicator
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Images, Colors, Metrics } from './App/Themes'
@@ -37,7 +40,6 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    //uncomment this to run an API query!
     this.loadArticles();
   }
 
@@ -53,10 +55,29 @@ export default class App extends React.Component {
     this.setState({loading: false, articles: resultArticles})
   }
 
+
+  // Citation: code for RefreshControl from: https://facebook.github.io/react-native/docs/refreshcontrol
+/*  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, [refreshing]);
+  */
+
   render() {
     const {articles, loading} = this.state;
 
+    if (loading) {
+      return (
+        <SafeAreaView style={styles.activityContainer}>
+          <ActivityIndicator  size="large" color="#CF5243"/>
+        </SafeAreaView>
+      )
+    }
+
     return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
 
         <Image style={styles.logo} source={Images.logo} accessibilityLabel={"New York Times Logo"}/>
@@ -75,6 +96,7 @@ export default class App extends React.Component {
       </View>
 
       <View style={styles.flatList}>
+
         <FlatList
           data={this.state.articles}
           renderItem={( {item, index} ) =>
@@ -88,7 +110,11 @@ export default class App extends React.Component {
         />
       </View>
 
+
+
       </SafeAreaView>
+
+      </TouchableWithoutFeedback>
 
 
     );
@@ -96,6 +122,11 @@ export default class App extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  activityContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -112,20 +143,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 10,
-    backgroundColor: '#F4F2F1'
+    backgroundColor: '#F4F2F1',
   },
   // Citaiton: styling for searchBar adapted from: https://facebook.github.io/react-native/docs/textinput#autocorrect
   searchBar: {
     height: 40,
-    width: Dimensions.get('window').width - 100,
-    marginLeft: 10
+    width: Dimensions.get('window').width - 50,
   },
   searchBtn: {
     width: Metrics.icons.medium,
     height: Metrics.icons.medium,
+    marginRight: 10
   },
   flatList: {
     marginTop: 10,
+    marginLeft: 10,
     flex: 1,
     width: Dimensions.get('window').width - 50,
   }
