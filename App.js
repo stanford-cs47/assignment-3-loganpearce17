@@ -55,16 +55,6 @@ export default class App extends React.Component {
     this.setState({loading: false, articles: resultArticles})
   }
 
-
-  // Citation: code for RefreshControl from: https://facebook.github.io/react-native/docs/refreshcontrol
-/*  const [refreshing, setRefreshing] = React.useState(false);
-
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false));
-  }, [refreshing]);
-  */
-
   render() {
     const {articles, loading} = this.state;
 

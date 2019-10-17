@@ -16,7 +16,6 @@ import { material } from 'react-native-typography';
 
 
 export default function Article(props) {
-  // console.log(props)
   function openURL() {
     Linking.openURL(props.item.url).catch((err) => console.error('An error occurred', err));
   }
